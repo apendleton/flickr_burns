@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Slideshow</title>
+        <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+        <script type="text/javascript" src="jflickrfeed.min.js"></script>
+        <script type="text/javascript">
+            jQuery.noConflict();
+        </script>
+        <script type="text/javascript" src="mootools.js"></script>
+        <script type="text/javascript" src="slideshow.js"></script>
+        <script type="text/javascript" src="slideshow.kenburns.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="css/slideshow.css" media="screen" />
+        
+        <style type="text/css">
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+        .slideshow-controller {
+            display: none !important;
+        }
+        .slideshow-captions {
+            font: 24px/36px verdana,sans-serif;
+            background: rgba(0,0,0,0.6);
+        }
+        #show {
+            width: 1920px;
+            height: 1080px;
+        }
+        </style>
+        
+        <script type="text/javascript">
+            (function($) {
+                $(function() {
+                    $('body').jflickrfeed({
+                        limit: 20,
+                        feedapi: 'photoset.gne',
+                        qstrings: {
+                            'set': '72157624622085789',
+                            'nsid': '24029425@N06',
+                            'lang': 'en-us',
+                            'format': 'json'
+                        },
+                        useTemplate: false
+                    }, function(data) {
+                        console.log(data);
+                        var slides = {}
+                        $.each(data.items, function(idx, img) {
+                            slides[img.image_b] = { caption: img.title };
+                        });
+                        var myShow = new Slideshow.KenBurns('show', slides, { captions: true, controller: true, delay: 5000, duration: 2000, height: 1080, width: 1920 });
+                    })
+                });
+            })(jQuery);
+        </script>
+    </head>
+    <body>
+        <div id="show"></div>
+    </body>
+</html>
